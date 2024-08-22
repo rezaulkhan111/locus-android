@@ -33,7 +33,7 @@ android {
 }
 
 dependencies {
-    compileOnly 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     compileOnly "com.google.android.gms:play-services-location:$location_version"
     implementation 'androidx.activity:activity-ktx:1.9.1'
 }

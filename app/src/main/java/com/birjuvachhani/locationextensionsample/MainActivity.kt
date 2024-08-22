@@ -15,6 +15,7 @@
 
 package com.birjuvachhani.locationextensionsample
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.location.Location
 import android.os.Bundle
@@ -50,6 +51,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         Locus.setLogging(true)
     }
 
+    @SuppressLint("SetTextI18n")
     fun getSingleUpdate(v: View) {
         Locus.getCurrentLocation(this) { result ->
             result.location?.let {
