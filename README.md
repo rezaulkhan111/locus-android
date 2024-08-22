@@ -98,8 +98,12 @@ allprojects {
 
 * Add the dependency in your app's build.gradle file
 
+[![Release](https://jitpack.io/v/rezaulkhan111/locus-android.svg)](https://jitpack.io/#rezaulkhan111/locus-android)
+
 ```
 dependencies {
+    implementation 'com.github.rezaulkhan111:locus-android:Tag'
+    // or
     implementation 'com.github.BirjuVachhani:locus-android:latest-version'
     implementation 'com.google.android.gms:play-services-location:latest-version'
 }
