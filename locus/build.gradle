@@ -3,14 +3,7 @@ plugins{
     id 'kotlin-android'
     id 'kotlin-parcelize'
 }
-//apply plugin: 'com.android.library'
-//apply plugin: 'kotlin-android'
-//apply plugin: 'com.github.dcendents.android-maven'
-//apply plugin: 'kotlin-parcelize'
-
-//group = 'com.github.BirjuVachhani'
 group 'dev.birju.locus-android'
-version '4.0.1'
 
 android {
     compileSdk 34
@@ -21,19 +14,20 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        jvmTarget = '17'
     }
 }
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    compileOnly "com.google.android.gms:play-services-location:$location_version"
-    implementation 'androidx.activity:activity-ktx:1.9.1'
+    implementation "com.google.android.gms:play-services-location:$location_version"
+//    implementation 'androidx.activity:activity-ktx:1.9.1'
 }
