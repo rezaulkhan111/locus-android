@@ -47,9 +47,9 @@ internal class LocationBroadcastReceiver : BroadcastReceiver() {
         intent ?: return
         if (intent.action == ACTION_PROCESS_UPDATES) {
             LocationResult.extractResult(intent)?.let { result ->
-                if (result.locations.isNotEmpty()) {
+                if (!result.locations.isNullOrEmpty() && result.locations.isNotEmpty()) {
                     logDebug("Received location ${result.lastLocation}")
-                    locationLiveData.postValue(LocusResult.success(result.lastLocation))
+                    locationLiveData.postValue(LocusResult.success(result.lastLocation!!))
                 }
             }
         }

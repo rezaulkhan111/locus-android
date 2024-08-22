@@ -15,14 +15,17 @@
 
 package com.birjuvachhani.locus
 
+import android.Manifest
 import android.app.ActivityManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Looper
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -201,6 +204,7 @@ object Locus {
             !getAllPermissions(config.enableBackgroundUpdates).all(context::hasPermission) ->
                 // Doesn't have permission, start permission resolution
                 startPermissionAndResolutionProcess(context, observer, singleUpdate != null)
+
             config.shouldResolveRequest ->
                 // has permissions, need to check for location settings
                 checkLocationSettings(context) { isSatisfied ->
@@ -212,6 +216,7 @@ object Locus {
                         startPermissionAndResolutionProcess(context, observer, singleUpdate != null)
                     }
                 }
+
             else ->
                 // has permission but location settings resolution is disabled so start updates directly
                 startUpdates(context, singleUpdate)
@@ -247,7 +252,7 @@ object Locus {
         if (singleUpdate == null) {
             locationProvider.startUpdates(config.locationRequest)
         } else {
-            locationProvider.getSingleUpdate(config.locationRequest, singleUpdate)
+            locationProvider.getSingleUpdate(context, config.locationRequest, singleUpdate)
         }
     }
 

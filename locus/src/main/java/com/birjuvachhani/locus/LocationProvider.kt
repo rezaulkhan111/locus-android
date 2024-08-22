@@ -15,10 +15,13 @@
 
 package com.birjuvachhani.locus
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Looper
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.location.*
 import java.util.concurrent.atomic.AtomicBoolean
@@ -74,32 +77,41 @@ internal class LocationProvider(context: Context) {
      * @param onUpdate Called on success/failure result of the single update retrieval process
      */
     internal fun getSingleUpdate(
+        mContext: Context,
         request: LocationRequest,
         onUpdate: (LocusResult) -> Unit
     ) {
         fun startUpdates() {
             val callback = object : LocationCallback() {
-                override fun onLocationResult(result: LocationResult?) {
-                    result?.lastLocation?.let { location ->
+                override fun onLocationResult(result: LocationResult) {
+                    result.lastLocation?.let { location ->
                         onUpdate(LocusResult.success(location))
                         mFusedLocationProviderClient.removeLocationUpdates(this)
                     }
                 }
             }
-            mFusedLocationProviderClient.requestLocationUpdates(
-                request.apply { numUpdates = 1 },
-                callback,
-                Looper.getMainLooper()
-            ).addOnFailureListener { error ->
-                logError(error)
-                onUpdate(LocusResult.error(error = error))
-            }
+            if (ActivityCompat.checkSelfPermission(
+                    mContext,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    mContext,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            )
+                mFusedLocationProviderClient.requestLocationUpdates(
+                    request.apply { numUpdates = 1 },
+                    callback,
+                    Looper.getMainLooper()
+                ).addOnFailureListener { error ->
+                    logError(error)
+                    onUpdate(LocusResult.error(error = error))
+                }
         }
-        mFusedLocationProviderClient.lastLocation?.addOnSuccessListener { result ->
+        mFusedLocationProviderClient.lastLocation.addOnSuccessListener { result ->
             result?.let { location ->
                 onUpdate(LocusResult.success(location))
             } ?: startUpdates()
-        }?.addOnFailureListener {
+        }.addOnFailureListener {
             logError(it)
             logDebug("Looks like last known location is not available, requesting a new location update")
             startUpdates()
