@@ -29,6 +29,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.edit
 import androidx.lifecycle.Lifecycle
 import com.google.android.gms.common.api.ApiException
@@ -43,17 +44,21 @@ import com.google.android.gms.location.LocationSettingsStatusCodes
  * Created by Birju Vachhani on 17 July 2019
  * Copyright © 2019 locus-android. All rights reserved.
  */
-
+/*
+ * Rezaul Khan
+ * https://github.com/rezaulkhan111
+ */
 /**
  * Activity that handles permission model as well as location settings resolution process
  * @property config Current configuration to be used for the library
  * @property pref SharedPreferences instance to managed permission model
  * @property permissions Permissions that needs to be requested based on the [config]
  */
-class LocusActivity : AppCompatActivity() {
+class LocusActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback {
 
     companion object {
         private const val REQUEST_CODE_LOCATION_SETTINGS = 545
+        private const val PERMISSION_REQUEST_CODE = 777
         private const val SETTINGS_ACTIVITY_REQUEST_CODE = 659
         private const val PREF_NAME = "locus_pref"
     }
@@ -64,6 +69,8 @@ class LocusActivity : AppCompatActivity() {
     }
 
     private var permissions: Array<String> = arrayOf()
+
+    private val defaultConfig: Configuration = Configuration()
 
     private lateinit var locationPermissionsLauncher: ActivityResultLauncher<Array<String>>
     private lateinit var allPermissionsLauncher: ActivityResultLauncher<Array<String>>
@@ -101,11 +108,13 @@ class LocusActivity : AppCompatActivity() {
                     // receive empty arrays.
                     logDebug("User interaction was cancelled.")
                 }
+
                 result.values.all { it } -> {
                     // All Permissions are granted.
                     logDebug("All permissions are granted")
                     onPermissionGranted()
                 }
+
                 else -> {
                     logDebug("Some permissions are denied.")
                     onPermissionDenied()
@@ -123,6 +132,7 @@ class LocusActivity : AppCompatActivity() {
                         // receive empty arrays.
                         logDebug("Android R+: user interaction was cancelled.")
                     }
+
                     result.values.all { it } -> {
                         // All Permissions are granted.
                         logDebug("Android R+: location permissions are granted")
@@ -133,6 +143,7 @@ class LocusActivity : AppCompatActivity() {
                             onPermissionGranted()
                         }
                     }
+
                     else -> {
                         if (locationPermissions.any(::shouldShowRationale)) {
                             logDebug("Android R+: location permissions are denied.")
@@ -162,10 +173,12 @@ class LocusActivity : AppCompatActivity() {
                         logDebug("Android R+: background location permission is granted.")
                         onPermissionGranted()
                     }
+
                     config.forceBackgroundUpdates -> {
                         logDebug("Android R+: background location permission is denied. and it was forced.")
                         showPermanentlyDeniedDialog()
                     }
+
                     else -> {
                         if (backgroundPermission.any(::shouldShowRationale)) {
                             logDebug("Android R+: background location permission is denied.")
@@ -307,6 +320,7 @@ class LocusActivity : AppCompatActivity() {
     private fun setLocationPermissionBlocked() {
         pref.edit { putBoolean("LOCATION_PERMISSION", true) }
     }
+
     private fun setBackgroundLocationPermissionBlocked() {
         pref.edit { putBoolean("BACKGROUND_LOCATION_PERMISSION", true) }
     }
@@ -469,10 +483,12 @@ class LocusActivity : AppCompatActivity() {
                         logDebug("Location settings resolution is required")
                         onResolutionNeeded(exception)
                     }
+
                     LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {
                         logDebug("cannot change settings, continue with current settings")
                         shouldProceedForLocation()
                     }
+
                     else -> logDebug("something went wrong while processing location settings resolution request: $exception")
                 }
             } else {

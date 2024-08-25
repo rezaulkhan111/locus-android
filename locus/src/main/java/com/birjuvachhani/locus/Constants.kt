@@ -20,6 +20,11 @@ package com.birjuvachhani.locus
  * Copyright © 2019 locus-android. All rights reserved.
  */
 
+/*
+ * Rezaul Khan
+ * https://github.com/rezaulkhan111
+ */
+
 /**
  * Holds all the constants used for the lib
  * */

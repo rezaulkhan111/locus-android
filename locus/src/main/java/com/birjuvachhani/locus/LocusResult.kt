@@ -21,7 +21,10 @@ import android.location.Location
  * Created by Birju Vachhani on 05 February 2019
  * Copyright © 2019 locus-android. All rights reserved.
  */
-
+/*
+ * Rezaul Khan
+ * https://github.com/rezaulkhan111
+ */
 /**
  * Represents states of LocusResult library
  * */

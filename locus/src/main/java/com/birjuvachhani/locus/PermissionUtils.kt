@@ -27,6 +27,11 @@ import androidx.core.content.ContextCompat
  * Copyright © 2019 locus-android. All rights reserved.
  */
 
+/*
+ * Rezaul Khan
+ * https://github.com/rezaulkhan111
+ */
+
 /**
  * Checks whether the app has location permission or not
  * @return true is the app has location permission, false otherwise.

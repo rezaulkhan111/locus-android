@@ -21,7 +21,10 @@ import android.util.Log
  * Created by Birju Vachhani on 19 July 2019
  * Copyright © 2019 locus-android. All rights reserved.
  */
-
+/*
+ * Rezaul Khan
+ * https://github.com/rezaulkhan111
+ */
 /**
  * Used to determine whether the logging is enabled or not
  */

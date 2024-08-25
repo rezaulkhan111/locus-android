@@ -15,8 +15,10 @@
 
 package com.birjuvachhani.locus
 
+import android.os.Parcel
 import android.os.Parcelable
 import com.google.android.gms.location.LocationRequest
+import kotlinx.parcelize.Parceler
 import kotlinx.parcelize.Parcelize
 
 /*
@@ -24,24 +26,41 @@ import kotlinx.parcelize.Parcelize
  * Copyright © 2019 locus-android. All rights reserved.
  */
 
+/*
+ * Rezaul Khan
+ * https://github.com/rezaulkhan111
+ */
+
 /**
  * Data class to store location related configurations which includes dialog messages and instance of LocationRequest class.
  * */
 @LocusMarker
 @Parcelize
-//@TypeParceler<LocationRequest, LocationRequestParceler>()
 data class Configuration(
+    @Deprecated("Override R.string.locus_rationale_message in strings.xml instead.")
+    var rationaleText: String =
+        "Location permission is required in order to use this feature properly.Please grant the permission.",
+    @Deprecated("Override R.string.locus_rationale_title strings.xml instead.")
+    var rationaleTitle: String = "Location permission required!",
+    @Deprecated("Override R.string.locus_permission_blocked_title strings.xml instead.")
+    var blockedTitle: String = "Location Permission Blocked",
+    @Deprecated("Override R.string.locus_permission_blocked_message strings.xml instead.")
+    var blockedText: String =
+        "Location permission is blocked. Please allow permission from settings screen to use this feature",
+    @Deprecated("Override R.string.locus_location_resolution_title strings.xml instead.")
+    var resolutionTitle: String = "Location is currently disabled",
+    @Deprecated("Override R.string.locus_location_resolution_message strings.xml instead.")
+    var resolutionText: String = "Please enable access to device location to proceed further.",
     internal var locationRequest: LocationRequest = getDefaultRequest(),
     var shouldResolveRequest: Boolean = true,
-    var enableBackgroundUpdates: Boolean = false,
-    var forceBackgroundUpdates: Boolean = false
+    var enableBackgroundUpdates: Boolean = true,
+    var forceBackgroundUpdates: Boolean = true
 ) : Parcelable {
-
-    companion object {
-        internal const val INTERVAL_IN_MS = 1000L
-        internal const val FASTEST_INTERVAL_IN_MS = 1000L
-        internal const val MAX_WAIT_TIME_IN_MS = 1000L
-    }
+//    companion object {
+//        internal const val INTERVAL_IN_MS = 1000L
+//        internal const val FASTEST_INTERVAL_IN_MS = 1000L
+//        internal const val MAX_WAIT_TIME_IN_MS = 1000L
+//    }
 
     /**
      * Create an instance of LocationRequest class
@@ -49,9 +68,21 @@ data class Configuration(
      * */
     fun request(func: (@LocusMarker LocationRequest).() -> Unit) {
         locationRequest = LocationRequest.create().apply(func)
-//        locationRequest = LocationRequest.Builder(getDefaultRequest()).build()
     }
 
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object : Parceler<LocationRequest> {
+        override fun create(parcel: Parcel): LocationRequest {
+            return LocationRequest.CREATOR.createFromParcel(parcel)
+        }
+
+        override fun LocationRequest.write(parcel: Parcel, flags: Int) {
+            writeToParcel(parcel, flags)
+        }
+    }
 }
 
 /**
@@ -61,18 +92,8 @@ data class Configuration(
 internal fun getDefaultRequest(): LocationRequest {
     return LocationRequest.create().apply {
         priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        interval = Configuration.INTERVAL_IN_MS
-        fastestInterval = Configuration.FASTEST_INTERVAL_IN_MS
-        maxWaitTime = Configuration.MAX_WAIT_TIME_IN_MS
+        interval = ConfOb.INTERVAL_IN_MS
+        fastestInterval = ConfOb.FASTEST_INTERVAL_IN_MS
+        maxWaitTime = ConfOb.MAX_WAIT_TIME_IN_MS
     }
 }
-
-//object LocationRequestParceler : Parceler<LocationRequest> {
-//    override fun create(parcel: Parcel): LocationRequest {
-//        return LocationRequest.CREATOR.createFromParcel(parcel)
-//    }
-//
-//    override fun LocationRequest.write(parcel: Parcel, flags: Int) {
-//        this.writeToParcel(parcel, flags)
-//    }
-//}

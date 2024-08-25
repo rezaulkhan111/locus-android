@@ -31,6 +31,11 @@ import java.util.concurrent.atomic.AtomicBoolean
  * Copyright © 2019 locus-android. All rights reserved.
  */
 
+/*
+ * Rezaul Khan
+ * https://github.com/rezaulkhan111
+ */
+
 /**
  * Responsible for starting and stopping location updates=
  * @property isRequestOngoing AtomicBoolean which indicates that whether a location request is ongoing or not

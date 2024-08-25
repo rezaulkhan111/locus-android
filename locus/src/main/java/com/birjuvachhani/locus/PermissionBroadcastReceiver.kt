@@ -25,6 +25,10 @@ import androidx.lifecycle.Observer
 /**
  * Receives results related to permission model
  */
+/*
+ * Rezaul Khan
+ * https://github.com/rezaulkhan111
+ */
 class PermissionObserver(private val onResult: (Throwable?) -> Unit) : Observer<String> {
 
     override fun onChanged(value: String) {

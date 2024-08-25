@@ -24,6 +24,11 @@ import androidx.lifecycle.Observer
  * Copyright © 2019 locus-android. All rights reserved.
  */
 
+/*
+ * Rezaul Khan
+ * https://github.com/rezaulkhan111
+ */
+
 /**
  * LiveData extension to observer it in a null safe way
  * */
