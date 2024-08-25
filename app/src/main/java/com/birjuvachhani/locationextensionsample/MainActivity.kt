@@ -49,10 +49,28 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
             putExtra("request", request)
         }
         Locus.setLogging(true)
+
+        binding.apply {
+            btnSingleUpdate.setOnClickListener {
+                getSingleUpdate()
+            }
+
+            btnService.setOnClickListener {
+                startLocationService()
+            }
+
+            btnStart.setOnClickListener {
+                startUpdates()
+            }
+
+            btnStop.setOnClickListener {
+                stopUpdates()
+            }
+        }
     }
 
     @SuppressLint("SetTextI18n")
-    fun getSingleUpdate(v: View) {
+    private fun getSingleUpdate() {
         Locus.getCurrentLocation(this) { result ->
             result.location?.let {
                 binding.tvSingleUpdate.text = "${it.latitude}, ${it.longitude}"
@@ -100,7 +118,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         }"
     }
 
-    fun startUpdates(v: View) {
+    private fun startUpdates() {
         Locus.configure {
             enableBackgroundUpdates = binding.scBackground.isChecked
             forceBackgroundUpdates = binding.scForceBackground.isChecked
@@ -112,7 +130,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         }
     }
 
-    fun stopUpdates(v: View) {
+    fun stopUpdates() {
         Locus.stopLocationUpdates()
         binding.btnStop.isEnabled = true
         binding.btnStart.isEnabled = true
@@ -121,7 +139,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         binding.tvSingleUpdate.visibility = View.INVISIBLE
     }
 
-    fun startLocationService(v: View) {
+    private fun startLocationService() {
         startService(Intent(this, LocationService::class.java))
         finish()
     }

@@ -19,6 +19,7 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import com.google.android.gms.location.LocationResult
 
 /*
@@ -41,9 +42,11 @@ internal class LocationBroadcastReceiver : BroadcastReceiver() {
             "com.birjuvachhani.locus.LocationProvider.LocationBroadcastReceiver.action.PROCESS_UPDATES"
 
         fun getPendingIntent(context: Context): PendingIntent {
+            val flag =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_UPDATE_CURRENT
             val intent = Intent(context, LocationBroadcastReceiver::class.java)
             intent.action = ACTION_PROCESS_UPDATES
-            return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+            return PendingIntent.getBroadcast(context, 0, intent, flag)
         }
     }
 

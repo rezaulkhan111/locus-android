@@ -102,7 +102,7 @@ internal class LocationProvider(context: Context) {
                     mContext,
                     Manifest.permission.ACCESS_COARSE_LOCATION
                 ) != PackageManager.PERMISSION_GRANTED
-            )
+            ) {
                 mFusedLocationProviderClient.requestLocationUpdates(
                     request.apply { numUpdates = 1 },
                     callback,
@@ -111,6 +111,7 @@ internal class LocationProvider(context: Context) {
                     logError(error)
                     onUpdate(LocusResult.error(error = error))
                 }
+            }
         }
         mFusedLocationProviderClient.lastLocation.addOnSuccessListener { result ->
             result?.let { location ->
