@@ -15,13 +15,9 @@
 
 package com.birjuvachhani.locus
 
-import android.os.Parcel
 import android.os.Parcelable
 import com.google.android.gms.location.LocationRequest
-import kotlinx.parcelize.Parceler
 import kotlinx.parcelize.Parcelize
-import kotlinx.parcelize.TypeParceler
-import kotlinx.parcelize.WriteWith
 
 /*
  * Created by Birju Vachhani on 07 February 2019
