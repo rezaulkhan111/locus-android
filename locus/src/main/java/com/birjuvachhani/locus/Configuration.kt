@@ -74,15 +74,15 @@ data class Configuration(
         return 0
     }
 
-    companion object : Parceler<LocationRequest> {
-        override fun create(parcel: Parcel): LocationRequest {
-            return LocationRequest.CREATOR.createFromParcel(parcel)
-        }
-
-        override fun LocationRequest.write(parcel: Parcel, flags: Int) {
-            writeToParcel(parcel, flags)
-        }
-    }
+//    companion object : Parceler<LocationRequest> {
+//        override fun create(parcel: Parcel): LocationRequest {
+//            return LocationRequest.CREATOR.createFromParcel(parcel)
+//        }
+//
+//        override fun LocationRequest.write(parcel: Parcel, flags: Int) {
+//            writeToParcel(parcel, flags)
+//        }
+//    }
 }
 
 /**

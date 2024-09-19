@@ -1,7 +1,7 @@
 buildscript {
     ext {
         kotlin_version = '1.8.20'
-        location_version= '21.3.0'
+        location_version= '18.0.0'
     }
     repositories {
         google()

@@ -25,8 +25,10 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Looper
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -36,6 +38,7 @@ import com.birjuvachhani.locus.Locus.config
 import com.birjuvachhani.locus.Locus.locationProvider
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
+import java.lang.Exception
 import java.util.concurrent.atomic.AtomicBoolean
 
 /*
@@ -279,7 +282,11 @@ object Locus {
         val intent = getLocationActivityIntent(context, isOneTime)
         permissionLiveData.observeForever(permissionObserver)
         if (appIsInForeground(context)) {
-            context.applicationContext.startActivity(intent)
+            try {
+                startActivity(context, intent, null)
+            } catch (ex: Exception) {
+                Log.e("Locus", "startPermissionAndResolutionProcess: " + ex)
+            }
         } else {
             val pendingIntent =
                 PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
